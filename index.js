@@ -1,6 +1,6 @@
 const { Pool, Client } = require("pg")
 require("dotenv").config()
-console.log(process.env.RDS_DB_NAME)
+
 const pool = new Pool({
   host: process.env.RDS_HOSTNAME,
   user: process.env.RDS_USERNAME,
