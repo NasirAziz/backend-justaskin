@@ -2,7 +2,7 @@ const admin = require("./connection/firebase");
 const cors = require("cors");
 const express = require("express");
 require("dotenv").config();
-const blogRoutes = require("./routes/blogPosts.jsx");
+const blogRoutes = require("./routes/blogPosts");
 
 const PORT = process.env.PORT || 3000;
 const corsOptions = {
