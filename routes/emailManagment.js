@@ -17,9 +17,9 @@ const sendEmail = (email) => {
 
     var mailOptions = {
       from: "umerk7222@gmail.com",
-      to: email,
-      subject: "Sending Email using Node.js",
-      text: "That was easy!",
+      to: "jasialnew1@gmail.com",
+      subject: "JUSASKIN APP NEWS LETTER",
+      text: email + "" + " Has Subscribed",
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
