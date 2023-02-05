@@ -16,6 +16,6 @@ app.use(cors(corsOptions));
 app.use("/api/users", require("./routes/users"));
 app.use("/api/blogPosts", blogRoutes);
 app.use("/api/email", emailRoute);
-app.listen(5000, () => {
+app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);
 });
