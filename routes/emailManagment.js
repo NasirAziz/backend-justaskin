@@ -11,8 +11,14 @@ const sendEmail = (email) => {
     var transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
+        type: "OAuth2",
         user: process.env.EMAIL,
         pass: process.env.PASSWORD,
+        clientId:
+          process.env.CLIENTID,
+        clientSecret: process.env.CLIENTSECRET,
+        // refreshToken: '1/XXxXxsss-xxxXXXXXxXxx0XXXxxXXx0x00xxx',
+        // accessToken: 'ya29.Xx_XX0xxxxx-xX0X0XxXXxXxXXXxX0x'
       },
     });
 
