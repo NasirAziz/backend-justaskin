@@ -1,5 +1,6 @@
 var nodemailer = require("nodemailer");
 const express = require("express");
+require("dotenv").config();
 const admin = require("firebase-admin");
 const router = express.Router();
 const db = admin.firestore();
@@ -11,15 +12,15 @@ const sendEmail = (email) => {
       service: "gmail",
       auth: {
         user: "umerk7222@gmail.com",
-        pass: "jvprxbymrzzvyzcg",
+        pass: process.env.PASSWORD,
       },
     });
 
     var mailOptions = {
       from: "umerk7222@gmail.com",
-      to: "jasialnew1@gmail.com",
+      to: "mail@jusaskin.com",
       subject: "JUSASKIN APP NEWS LETTER",
-      text: email + "" + " Has Subscribed",
+      text: email + "" + " has subscribed",
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
