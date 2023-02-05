@@ -30,7 +30,8 @@ const sendEmail = (email) => {
       Dear,
       
       We are thrilled to have you on board as a new member of Jus Askin! We are excited to share our platform with you and help you make the most out of it.
-      At Jus Askin, we are dedicated to providing you with an easy and convenient way to ask and receive answers to your questions with valuable content. Our community of knowledgeable individuals is always here to help, and we believe that you will find the information you need in no time.
+      At Jus Askin, we are dedicated to providing you with an easy and convenient way to ask and receive answers to your questions with valuable content. 
+      Our community of knowledgeable individuals is always here to help, and we believe that you will find the information you need in no time.
       
       Thank you for signing up and we look forward to your participation in our community. 
       If you have any questions or feedback, please don't hesitate to reach out to us. We are always here to help.
