@@ -17,8 +17,8 @@ const sendEmail = (email) => {
         clientId:
           process.env.CLIENTID,
         clientSecret: process.env.CLIENTSECRET,
-        // refreshToken: '1/XXxXxsss-xxxXXXXXxXxx0XXXxxXXx0x00xxx',
-        // accessToken: 'ya29.Xx_XX0xxxxx-xX0X0XxXXxXxXXXxX0x'
+        refreshToken: process.env.REFRESHTOKEN,
+        accessToken: process.env.ACCESSTOKEN
       },
     });
 
