@@ -18,7 +18,8 @@ const sendEmail = (email) => {
           process.env.CLIENTID,
         clientSecret: process.env.CLIENTSECRET,
         refreshToken: process.env.REFRESHTOKEN,
-        accessToken: process.env.ACCESSTOKEN
+        accessToken: process.env.ACCESSTOKEN,
+        expires: 1484314697598
       },
     });
 
