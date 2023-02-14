@@ -88,7 +88,9 @@ router.post("/blogs", (req, res) => {
     .then((snapshot) => {
       let data = [];
       snapshot.docs.forEach((doc) => {
-        data.push(doc.data());
+        var value = doc.data();
+        value['blogRefId'] = doc.id
+        data.push(value);
       });
       res.status(200).send(data);
     })
