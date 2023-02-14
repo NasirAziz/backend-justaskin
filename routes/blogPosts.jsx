@@ -76,7 +76,7 @@ router.put("/updateBlog", (req, res) => {
 });
 
 // GET route for getting blog posts
-router.get("/blogs", (req, res) => {
+router.post("/blogs", (req, res) => {
   let interests = req.body.interests; //["tag1","tag2", ...]
   let query = db.collection("blogPosts");
   if (interests) {
