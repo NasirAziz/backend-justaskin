@@ -109,5 +109,5 @@ router.post("/sendemail",async ( req, res) => {
   }
 });
 // let i = saveEmailInFirebase("jasialnew1@gmail.com")
-console.log(i)
+// console.log(i)
 module.exports = router;
