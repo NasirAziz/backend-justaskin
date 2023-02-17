@@ -28,7 +28,7 @@ const sendEmail = (email) => {
       to: email,
       subject: "Subject: Welcome to Jus Askin!",
       text: `   
-     Hello!
+       Hello!
 
       Thank you for subscribing to Jus Askin! We are thrilled to have you on board and can't wait to share our platform with you.
 
@@ -58,19 +58,56 @@ const sendEmail = (email) => {
     return false;
   }
 };
+const saveEmailInFirebase = (email) => {
+  return new Promise((resolve, reject) => {
+    db.collection("subscribeusers")
+      .where("email", "==", email)
+      .get()
+      .then((snapshot) => {
+        if (snapshot.empty) {
+          db.collection("subscribeusers")
+            .add({
+              email: email,
+            })
+            .then(() => {
+              resolve(true);
+            })
+            .catch((error) => {
+              reject("Error");
+            });
+        } else {
+          resolve(false);
+        }
+      })
+      .catch((error) => {
+        reject("Error");
+      });
+  });
+};
 // sendEmail();
-router.post("/sendemail", (req, res) => {
+router.post("/sendemail",async ( req, res) => {
+  let sent;
   console.log(req.body.email);
   const email = req.body.email;
   if (email) {
-    const sent = sendEmail(email);
-    if (sent) {
-      res.status(200).json("Success");
-    } else {
-      res.status(500).json("Error");
+    let i = await saveEmailInFirebase(email);
+    if (i) {
+       sent = sendEmail(email);
+       if (sent) {
+        res.status(200).json("Success");
+      } else {
+        res.status(500).json("Error");
+      }
     }
+    else{
+    res.status(500).json("You are already subciber");
+
+    }
+
   } else {
     res.status(500).json("provie email to sent");
   }
 });
+// let i = saveEmailInFirebase("jasialnew1@gmail.com")
+console.log(i)
 module.exports = router;
