@@ -161,7 +161,7 @@ router.post("/addComment", (req, res) => {
   })
     .then(() => {
       console.log("Add Comment Transaction successfully committed!");
-      res.status(200).send("OK");
+      res.status(200).json({ status: "ok" });
     })
     .catch((error) => {
       console.log("Transaction failed: ", error);
