@@ -74,7 +74,8 @@ const saveEmailInFirebase = (email, interest) => {
           db.collection("subscribeusers")
             .add({
               email: email,
-              interest: interest ? interest : null
+              interest: interest ? interest : null,
+              date:new Date().getTime()
             })
             .then(() => {
               resolve(true);
