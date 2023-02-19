@@ -6,28 +6,29 @@ const router = express.Router();
 const db = admin.firestore();
 router.use(express.json()); // for application/json
 router.use(express.urlencoded());
-const sendEmail = (email) => {
-  try {
-    var transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        type: "OAuth2",
-        user: process.env.EMAIL,
-        pass: process.env.PASSWORD,
-        clientId:
-          process.env.CLIENTID,
-        clientSecret: process.env.CLIENTSECRET,
-        refreshToken: process.env.REFRESHTOKEN,
-        accessToken: process.env.ACCESSTOKEN,
-        expires: 1484314697598
-      },
-    });
+const sendEmail = async (email) => {
+  return new Promise((resolve, reject) => {
+    try {
+      var transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          type: "OAuth2",
+          user: process.env.EMAIL,
+          pass: process.env.PASSWORD,
+          clientId:
+            process.env.CLIENTID,
+          clientSecret: process.env.CLIENTSECRET,
+          refreshToken: process.env.REFRESHTOKEN,
+          accessToken: process.env.ACCESSTOKEN,
+          expires: 1484314697598
+        },
+      });
 
-    var mailOptions = {
-      from: "umerk7222@gmail.com",
-      to: email,
-      subject: "Subject: Welcome to Jus Askin!",
-      text: `   
+      var mailOptions = {
+        from: "umerk7222@gmail.com",
+        to: email,
+        subject: "Subject: Welcome to Jus Askin!",
+        text: `   
        Hello!
 
       Thank you for subscribing to Jus Askin! We are thrilled to have you on board and can't wait to share our platform with you.
@@ -43,26 +44,27 @@ const sendEmail = (email) => {
       Best regards,
 
       The Jus Askin Team,`
-    };
+      };
 
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error);
-    return false;
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error);
+          reject(error)
 
-      } else {
-        console.log("Email sent: " + info.response);
-    return true;
+        } else {
+          console.log("Email sent: " + info.response);
+         resolve(true)
 
-      }
-    });
-    
-  } catch (e) {
-    console.log(e);
-    return false;
-  }
+        }
+      });
+
+    } catch (e) {
+      console.log(e);
+      reject(e)
+    }
+  });
 };
-const saveEmailInFirebase = (email,interest) => {
+const saveEmailInFirebase = (email, interest) => {
   return new Promise((resolve, reject) => {
     db.collection("subscribeusers")
       .where("email", "==", email)
@@ -72,7 +74,7 @@ const saveEmailInFirebase = (email,interest) => {
           db.collection("subscribeusers")
             .add({
               email: email,
-              interest:interest ? interest : null
+              interest: interest ? interest : null
             })
             .then(() => {
               resolve(true);
@@ -90,23 +92,23 @@ const saveEmailInFirebase = (email,interest) => {
   });
 };
 // sendEmail();
-router.post("/sendemail",async ( req, res) => {
+router.post("/sendemail", async (req, res) => {
   let sent;
   console.log(req.body.email);
   const email = req.body.email;
   const interest = req.body.interest;
   if (email) {
-    let i = await saveEmailInFirebase(email,interest);
+    let i = await saveEmailInFirebase(email, interest);
     if (i) {
-       sent = sendEmail(email);
-       if (sent) {
+      sent = await sendEmail(email);
+      if (sent) {
         res.status(200).json("Success");
       } else {
         res.status(500).json("Error");
       }
     }
-    else{
-    res.status(500).json("You are already subciber");
+    else {
+      res.status(500).json("You are already subciber");
 
     }
 
