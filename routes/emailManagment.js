@@ -48,17 +48,21 @@ const sendEmail = (email) => {
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
         console.log(error);
+    return false;
+
       } else {
         console.log("Email sent: " + info.response);
+    return true;
+
       }
     });
-    return true;
+    
   } catch (e) {
     console.log(e);
     return false;
   }
 };
-const saveEmailInFirebase = (email) => {
+const saveEmailInFirebase = (email,interest) => {
   return new Promise((resolve, reject) => {
     db.collection("subscribeusers")
       .where("email", "==", email)
@@ -68,6 +72,7 @@ const saveEmailInFirebase = (email) => {
           db.collection("subscribeusers")
             .add({
               email: email,
+              interest:interest ? interest : null
             })
             .then(() => {
               resolve(true);
@@ -89,8 +94,9 @@ router.post("/sendemail",async ( req, res) => {
   let sent;
   console.log(req.body.email);
   const email = req.body.email;
+  const interest = req.body.interest;
   if (email) {
-    let i = await saveEmailInFirebase(email);
+    let i = await saveEmailInFirebase(email,interest);
     if (i) {
        sent = sendEmail(email);
        if (sent) {
@@ -108,6 +114,4 @@ router.post("/sendemail",async ( req, res) => {
     res.status(500).json("provie email to sent");
   }
 });
-// let i = saveEmailInFirebase("jasialnew1@gmail.com")
-// console.log(i)
 module.exports = router;
