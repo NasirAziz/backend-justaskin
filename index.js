@@ -4,6 +4,7 @@ const express = require("express");
 require("dotenv").config();
 const blogRoutes = require("./routes/blogPosts.jsx");
 const emailRoute = require("./routes/emailManagment");
+const uploadRoute = require("./routes/resources.jsx");
 
 const PORT = process.env.PORT || 3000;
 const corsOptions = {
@@ -16,6 +17,7 @@ app.use(cors(corsOptions));
 app.use("/api/users", require("./routes/users"));
 app.use("/api/blogPosts", blogRoutes);
 app.use("/api/email", emailRoute);
+app.use("/api/resources", uploadRoute);
 app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);
 });
