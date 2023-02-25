@@ -122,7 +122,8 @@ router.post("/updateLikes", (req, res) => {
           .update({ likes })
           .then((snapshot) => {
             console.log("Blog likes updated:", likes.total);
-            res.status(200).send("OK");
+           res.status(200).json({ status: "ok" });
+
           })
           .catch((reason) => {
             console.log("Blog Likes update failed:", reason);
