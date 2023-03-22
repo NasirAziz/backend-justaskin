@@ -98,6 +98,27 @@ router.post("/blogs", (req, res) => {
       res.status(500).send(reason);
     });
 });
+router.post("/getresources", (req, res) => {
+  let email = req.body.email;
+  let query = db.collection("blogPosts");
+  if (email) {
+    query = query.where("email", "==", email); // search for documents with matching authorEmail field
+  }
+  query
+    .get()
+    .then((snapshot) => {
+      let data = [];
+      snapshot.docs.forEach((doc) => {
+        var value = doc.data().imageIDs;
+        var value = { title: doc.data().content, urlLinks: doc.data().imageIDs }; // get only the urlLinks array
+        data = [...data,value]
+      });
+      res.status(200).send(data);
+    })
+    .catch((reason) => {
+      res.status(500).send(reason);
+    });
+});
 // POST route to update number of likes of a blog post
 router.post("/updateLikes", (req, res) => {
   const blogRefID = req.body.blogRefID;
