@@ -13,6 +13,7 @@ const db = admin.firestore();
 router.post("/addBlog", (req, res) => {
   let blogPost = {
     author: req.body.author,
+    email:req.body.email,
     content: req.body.content,
     date: new Date(Date.now()), //2023-01-11T11:42:13.935Z
     likes: { total: 0, data: [] }, //{date:{},user:{}}
@@ -34,7 +35,8 @@ router.post("/addBlog", (req, res) => {
     .add(blogPost, { ignoreUndefinedProperties: true })
     .then((snapshot) => {
       console.log("Blog Post created:", snapshot.path);
-      res.status(200).send("OK"); //snapshot.path = "blogPosts/generated ID"
+      res.status(200).json({ status: "ok" });
+      //snapshot.path = "blogPosts/generated ID"
     })
     .catch((reason) => {
       console.log("Error creating blog post:", reason);
@@ -46,22 +48,6 @@ router.post("/addBlog", (req, res) => {
 router.put("/updateBlog", (req, res) => {
   const blogRefID = req.body.blogRefID;
   let blogPost = req.body.blogPost;
-
-  // let blogPost = {
-  //   author: req.body.author,
-  //   content: req.body.content,
-  //   date: new Date(Date.now()), //2023-01-11T11:42:13.935Z
-  //   likes: 0,
-  //   comments: {
-  //     userID: "",
-  //     userName: "",
-  //     comment: "",
-  //     date: "",
-  //   },
-  //   imageIDs: req.body.imageIDs,
-  //   videoIDs: req.body.videoIDs,
-  // };
-
   db.collection("blogPosts")
     .doc(blogRefID)
     .update(blogPost)
@@ -91,6 +77,27 @@ router.post("/blogs", (req, res) => {
         var value = doc.data();
         value['blogRefId'] = doc.id
         data.push(value);
+      });
+      res.status(200).send(data);
+    })
+    .catch((reason) => {
+      res.status(500).send(reason);
+    });
+});
+router.post("/getresources", (req, res) => {
+  let email = req.body.email;
+  let query = db.collection("blogPosts");
+  if (email) {
+    query = query.where("email", "==", email); // search for documents with matching authorEmail field
+  }
+  query
+    .get()
+    .then((snapshot) => {
+      let data = [];
+      snapshot.docs.forEach((doc) => {
+        var value = doc.data().imageIDs;
+        var value = { title: doc.data().content, urlLinks: doc.data().imageIDs }; // get only the urlLinks array
+        data = [...data,value]
       });
       res.status(200).send(data);
     })
@@ -206,5 +213,6 @@ router.put("/addRating", (req, res) => {
       res.status(500).send(error);
     });
 });
+
 
 module.exports = router;
